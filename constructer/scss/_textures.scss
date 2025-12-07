@@ -1,0 +1,119 @@
+// ============================================
+// NOISE & TEXTURES
+// ============================================
+
+// --- Film grain ---
+@mixin c-grain($opacity: 0.05, $size: 100px) {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: $opacity;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 #{$size} #{$size}' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+}
+
+// Animated grain
+@mixin c-grain-animated($opacity: 0.05) {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    pointer-events: none;
+    opacity: $opacity;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    animation: c-grain-shift 0.5s steps(10) infinite;
+  }
+  
+  @at-root {
+    @keyframes c-grain-shift {
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-5%, -10%); }
+      20% { transform: translate(-15%, 5%); }
+      30% { transform: translate(7%, -25%); }
+      40% { transform: translate(-5%, 25%); }
+      50% { transform: translate(-15%, 10%); }
+      60% { transform: translate(15%, 0%); }
+      70% { transform: translate(0%, 15%); }
+      80% { transform: translate(3%, 35%); }
+      90% { transform: translate(-10%, 10%); }
+    }
+  }
+}
+
+// --- Dot pattern ---
+@mixin c-dots($size: 2px, $spacing: 20px, $color: rgba(255, 255, 255, 0.1)) {
+  background-image: radial-gradient($color $size, transparent $size);
+  background-size: $spacing $spacing;
+}
+
+// --- Grid pattern ---
+@mixin c-grid($size: 40px, $color: rgba(255, 255, 255, 0.1), $thickness: 1px) {
+  background-image: 
+    linear-gradient(to right, $color $thickness, transparent $thickness),
+    linear-gradient(to bottom, $color $thickness, transparent $thickness);
+  background-size: $size $size;
+}
+
+// --- Scanlines ---
+@mixin c-scanlines($opacity: 0.05, $size: 4px) {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, $opacity) 0px,
+      rgba(0, 0, 0, $opacity) 1px,
+      transparent 1px,
+      transparent $size
+    );
+  }
+}
+
+// --- Diagonal stripes ---
+@mixin c-stripes($color1: rgba(255, 255, 255, 0.05), $color2: transparent, $size: 10px) {
+  background: repeating-linear-gradient(
+    45deg,
+    $color1,
+    $color1 $size,
+    $color2 $size,
+    $color2 ($size * 2)
+  );
+}
+
+// --- Checkerboard ---
+@mixin c-checkerboard($size: 20px, $color1: rgba(255, 255, 255, 0.05), $color2: transparent) {
+  background-image: 
+    linear-gradient(45deg, $color1 25%, transparent 25%),
+    linear-gradient(-45deg, $color1 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, $color1 75%),
+    linear-gradient(-45deg, transparent 75%, $color1 75%);
+  background-size: $size $size;
+  background-position: 0 0, 0 ($size / 2), ($size / 2) (-$size / 2), (-$size / 2) 0;
+}
+
+// --- Noise overlay (CSS only, subtle) ---
+@mixin c-noise($opacity: 0.02) {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: $opacity;
+    background: 
+      repeating-radial-gradient(circle at 17% 32%, white, black 0.005%),
+      repeating-radial-gradient(circle at 83% 68%, white, black 0.005%);
+    mix-blend-mode: overlay;
+  }
+}

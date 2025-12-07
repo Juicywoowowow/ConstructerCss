@@ -1,0 +1,186 @@
+// ============================================
+// TYPOGRAPHY UTILITIES
+// ============================================
+
+@use 'sass:math';
+@use 'primitives' as p;
+
+// --- Fluid typography ---
+@mixin c-fluid-text($min-size, $max-size, $min-vw: 320px, $max-vw: 1200px) {
+  font-size: $min-size;
+  font-size: clamp(#{$min-size}, calc(#{$min-size} + (#{strip-unit($max-size)} - #{strip-unit($min-size)}) * ((100vw - #{$min-vw}) / (#{strip-unit($max-vw)} - #{strip-unit($min-vw)}))), #{$max-size});
+}
+
+// Helper to strip units
+@function strip-unit($value) {
+  @return math.div($value, ($value * 0 + 1));
+}
+
+// --- Text truncation ---
+@mixin c-truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// --- Line clamp ---
+@mixin c-line-clamp($lines) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// --- Text gradient ---
+@mixin c-text-gradient($gradient) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+// Preset gradients for text
+@mixin c-text-gradient-sunset() {
+  @include c-text-gradient(linear-gradient(135deg, #ff512f, #f09819));
+}
+
+@mixin c-text-gradient-ocean() {
+  @include c-text-gradient(linear-gradient(135deg, #2193b0, #6dd5ed));
+}
+
+@mixin c-text-gradient-neon() {
+  @include c-text-gradient(linear-gradient(135deg, #f953c6, #b91d73));
+}
+
+@mixin c-text-gradient-aurora() {
+  @include c-text-gradient(linear-gradient(135deg, #00c9ff, #92fe9d));
+}
+
+// --- Text shadow ---
+@mixin c-text-shadow($color: rgba(0, 0, 0, 0.3), $x: 0, $y: 2px, $blur: 4px) {
+  text-shadow: $x $y $blur $color;
+}
+
+@mixin c-text-glow($color, $size: 10px) {
+  text-shadow: 0 0 $size $color, 0 0 ($size * 2) $color;
+}
+
+// --- Text stroke ---
+@mixin c-text-stroke($width: 1px, $color: currentColor) {
+  -webkit-text-stroke: $width $color;
+  text-stroke: $width $color;
+}
+
+@mixin c-text-outline($color: #000, $width: 1px) {
+  text-shadow:
+    (-$width) (-$width) 0 $color,
+    $width (-$width) 0 $color,
+    (-$width) $width 0 $color,
+    $width $width 0 $color;
+}
+
+// --- Font smoothing ---
+@mixin c-font-smooth() {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// --- Balanced text ---
+@mixin c-text-balance() {
+  text-wrap: balance;
+}
+
+@mixin c-text-pretty() {
+  text-wrap: pretty;
+}
+
+// --- Letter spacing presets ---
+@mixin c-tracking-tight() {
+  letter-spacing: -0.025em;
+}
+
+@mixin c-tracking-normal() {
+  letter-spacing: 0;
+}
+
+@mixin c-tracking-wide() {
+  letter-spacing: 0.025em;
+}
+
+@mixin c-tracking-wider() {
+  letter-spacing: 0.05em;
+}
+
+@mixin c-tracking-widest() {
+  letter-spacing: 0.1em;
+}
+
+// --- Line height presets ---
+@mixin c-leading-none() {
+  line-height: 1;
+}
+
+@mixin c-leading-tight() {
+  line-height: 1.25;
+}
+
+@mixin c-leading-snug() {
+  line-height: 1.375;
+}
+
+@mixin c-leading-normal() {
+  line-height: 1.5;
+}
+
+@mixin c-leading-relaxed() {
+  line-height: 1.625;
+}
+
+@mixin c-leading-loose() {
+  line-height: 2;
+}
+
+// --- Selection ---
+@mixin c-selection($bg: #667eea, $color: #fff) {
+  &::selection {
+    background: $bg;
+    color: $color;
+  }
+}
+
+// --- Vertical text ---
+@mixin c-text-vertical() {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+// --- Uppercase with spacing ---
+@mixin c-uppercase() {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+// --- Small caps ---
+@mixin c-small-caps() {
+  font-variant: small-caps;
+}
+
+// --- Responsive font size ---
+@mixin c-text-responsive($base-size, $scale: 1.2) {
+  font-size: $base-size;
+  
+  @media (min-width: 640px) {
+    font-size: $base-size * $scale;
+  }
+  
+  @media (min-width: 1024px) {
+    font-size: $base-size * $scale * $scale;
+  }
+}

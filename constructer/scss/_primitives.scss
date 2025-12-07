@@ -1,0 +1,54 @@
+// ============================================
+// PRIMITIVES - Colors, Spacing, Typography
+// ============================================
+
+// --- Color System ---
+$c-black: #000 !default;
+$c-white: #fff !default;
+
+// Spacing scale (4px base)
+$c-space-unit: 4px !default;
+$c-space-1: $c-space-unit;
+$c-space-2: $c-space-unit * 2;
+$c-space-3: $c-space-unit * 3;
+$c-space-4: $c-space-unit * 4;
+$c-space-6: $c-space-unit * 6;
+$c-space-8: $c-space-unit * 8;
+$c-space-12: $c-space-unit * 12;
+$c-space-16: $c-space-unit * 16;
+
+// Typography scale
+$c-font-xs: 0.75rem !default;
+$c-font-sm: 0.875rem !default;
+$c-font-base: 1rem !default;
+$c-font-lg: 1.125rem !default;
+$c-font-xl: 1.25rem !default;
+$c-font-2xl: 1.5rem !default;
+$c-font-3xl: 1.875rem !default;
+$c-font-4xl: 2.25rem !default;
+
+// Fluid typography
+@function c-fluid-type($min-size, $max-size, $min-vw: 320px, $max-vw: 1200px) {
+  $slope: calc(($max-size - $min-size) / ($max-vw - $min-vw));
+  $intercept: $min-size - $slope * $min-vw;
+  @return clamp(#{$min-size}, #{$intercept} + #{$slope * 100vw}, #{$max-size});
+}
+
+// Easing functions
+$c-ease-in: cubic-bezier(0.4, 0, 1, 1);
+$c-ease-out: cubic-bezier(0, 0, 0.2, 1);
+$c-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+$c-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+// Color manipulation
+@function c-alpha($color, $alpha) {
+  @return rgba($color, $alpha);
+}
+
+@function c-lighten($color, $amount) {
+  @return mix($c-white, $color, $amount);
+}
+
+@function c-darken($color, $amount) {
+  @return mix($c-black, $color, $amount);
+}

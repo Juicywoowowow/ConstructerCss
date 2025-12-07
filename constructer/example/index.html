@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Constructer - Supercharge Your SCSS</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <svg id="nav-logo-svg" width="32" height="32" viewBox="0 0 32 32"></svg>
+      <span>Constructer</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#examples">Examples</a>
+      <a href="#docs">Docs</a>
+      <a href="#" class="nav-cta">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg" data-c-scene="hero-bg">
+      <div class="hero-bg-layer" data-c-layer data-c-z="0"></div>
+      <svg class="hero-svg" id="hero-svg" viewBox="0 0 800 600"></svg>
+    </div>
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="hero-title-line">Supercharge</span>
+        <span class="hero-title-line gradient">Your SCSS</span>
+      </h1>
+      <p class="hero-subtitle">Beautiful visual effects, layered compositions, and runtime SVG generation. All from a single TypeScript + SCSS library.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-primary">Get Started</a>
+        <a href="#" class="btn btn-secondary">View on GitHub</a>
+      </div>
+      <div class="hero-code">
+        <pre><code>@use 'constructer' as c;
+
+.hero {
+  @include c.c-gradient-mesh-neon();
+  @include c.c-glass(12px, 0.1);
+}</code></pre>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator" id="scroll-indicator">
+      <span>Scroll to explore</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="section-title">Powerful Features</h2>
+      <p class="section-subtitle">Everything you need to create stunning visual experiences</p>
+      
+      <div class="features-grid">
+        <div class="feature-card" data-scroll-reveal>
+          <div class="feature-icon" id="feature-icon-1"></div>
+          <h3>Path Builder</h3>
+          <p>Fluent API for creating complex SVG paths at runtime. Stars, polygons, curves - all programmatic.</p>
+        </div>
+        
+        <div class="feature-card" data-scroll-reveal>
+          <div class="feature-icon" id="feature-icon-2"></div>
+          <h3>Path Morphing</h3>
+          <p>Smooth transitions between any two shapes. No matter how different the paths are.</p>
+        </div>
+        
+        <div class="feature-card" data-scroll-reveal>
+          <div class="feature-icon" id="feature-icon-3"></div>
+          <h3>Gradient Presets</h3>
+          <p>Beautiful gradient mixins - sunset, ocean, aurora, neon, mesh gradients and more.</p>
+        </div>
+        
+        <div class="feature-card" data-scroll-reveal>
+          <div class="feature-icon" id="feature-icon-4"></div>
+          <h3>SVG Filters</h3>
+          <p>Blur, glow, drop shadows, color matrices - all generated and applied at runtime.</p>
+        </div>
+        
+        <div class="feature-card" data-scroll-reveal>
+          <div class="feature-icon" id="feature-icon-5"></div>
+          <h3>Timeline Animation</h3>
+          <p>Chain and stagger animations with a simple API. Full control over timing and easing.</p>
+        </div>
+        
+        <div class="feature-card" data-scroll-reveal>
+          <div class="feature-icon" id="feature-icon-6"></div>
+          <h3>Scroll Effects</h3>
+          <p>Scroll-linked animations, parallax, and intersection observers built in.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Demo Section -->
+  <section class="demo-section" id="examples">
+    <div class="container">
+      <h2 class="section-title">See It In Action</h2>
+      <p class="section-subtitle">Interactive demos powered by Constructer</p>
+      
+      <div class="demo-grid">
+        <!-- Morph Demo -->
+        <div class="demo-card">
+          <h3>Path Morphing</h3>
+          <div class="demo-canvas">
+            <svg id="demo-morph" width="200" height="200" viewBox="0 0 200 200"></svg>
+          </div>
+          <button class="btn btn-small" id="morph-trigger">Morph Shape</button>
+        </div>
+        
+        <!-- Fluid Drag Demo -->
+        <div class="demo-card">
+          <h3>Fluid Drag</h3>
+          <div class="demo-canvas">
+            <svg id="demo-drag" width="200" height="200" viewBox="0 0 200 200"></svg>
+          </div>
+          <p class="demo-hint">Drag the shape</p>
+        </div>
+        
+        <!-- Text Path Demo -->
+        <div class="demo-card">
+          <h3>Text on Path</h3>
+          <div class="demo-canvas">
+            <svg id="demo-text-path" width="200" height="200" viewBox="0 0 200 200"></svg>
+          </div>
+        </div>
+        
+        <!-- Timeline Demo -->
+        <div class="demo-card">
+          <h3>Timeline Animation</h3>
+          <div class="demo-canvas timeline-canvas">
+            <div class="timeline-dot" data-tl></div>
+            <div class="timeline-dot" data-tl></div>
+            <div class="timeline-dot" data-tl></div>
+            <div class="timeline-dot" data-tl></div>
+            <div class="timeline-dot" data-tl></div>
+          </div>
+          <button class="btn btn-small" id="timeline-trigger">Play</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code Examples Section -->
+  <section class="code-section" id="docs">
+    <div class="container">
+      <h2 class="section-title">Simple, Powerful API</h2>
+      <p class="section-subtitle">Write less, achieve more</p>
+      
+      <div class="code-tabs">
+        <div class="code-tab active" data-tab="scss">SCSS</div>
+        <div class="code-tab" data-tab="runtime">Runtime</div>
+      </div>
+      
+      <div class="code-panels">
+        <div class="code-panel active" data-panel="scss">
+          <pre><code>@use 'constructer' as c;
+
+// Gradient backgrounds
+.hero {
+  @include c.c-gradient-mesh-neon();
+}
+
+// Glass morphism
+.card {
+  @include c.c-glass(12px, 0.1);
+}
+
+// Typography effects
+.title {
+  @include c.c-text-gradient-aurora();
+  @include c.c-fluid-text(2rem, 4rem);
+}
+
+// Textures
+.overlay {
+  @include c.c-grain(0.05);
+  @include c.c-scanlines(0.1);
+}
+
+// Responsive
+@include c.c-above('md') {
+  .grid { columns: 3; }
+}</code></pre>
+        </div>
+        
+        <div class="code-panel" data-panel="runtime">
+          <pre><code>import Constructer from 'constructer';
+
+const { path, svg, filters, morph, timeline } = Constructer;
+
+// Create SVG shapes
+const star = path()
+  .star(100, 100, 50, 25, 5)
+  .build({ fill: '#667eea' });
+
+// Apply filters
+const { id, filter } = filters.glow(8, '#00f2fe');
+filters.addFilterToSVG(mySvg, filter);
+filters.applyFilter(star, id);
+
+// Morph between shapes
+await morph.morph(element, starPath, circlePath, {
+  duration: 600,
+  easing: 'ease-in-out'
+});
+
+// Timeline animations
+timeline()
+  .stagger(elements, keyframes, 400, 100)
+  .play();</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-bg" id="cta-bg"></div>
+    <div class="container">
+      <h2>Ready to Build Something Beautiful?</h2>
+      <p>Get started with Constructer in minutes</p>
+      <div class="cta-install">
+        <code>npm install constructer</code>
+        <button class="copy-btn" id="copy-install">Copy</button>
+      </div>
+      <div class="cta-actions">
+        <a href="#" class="btn btn-primary btn-large">Read the Docs</a>
+        <a href="#" class="btn btn-secondary btn-large">View Examples</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <svg width="24" height="24" viewBox="0 0 32 32" id="footer-logo"></svg>
+          <span>Constructer</span>
+        </div>
+        <div class="footer-links">
+          <a href="#">GitHub</a>
+          <a href="#">Documentation</a>
+          <a href="#">Examples</a>
+          <a href="#">License</a>
+        </div>
+      </div>
+      <p class="footer-copy">Built with Constructer. Open source under MIT.</p>
+    </div>
+  </footer>
+
+  <script src="../dist/constructer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const { path, svg, filters, morph, timeline, scroll, textPath, input, events } = Constructer;
+
+      // --- Nav Logo ---
+      const navLogoSvg = document.getElementById('nav-logo-svg');
+      const navLogo = path().star(16, 16, 12, 6, 6).build({ fill: '#667eea' });
+      navLogoSvg.appendChild(navLogo);
+
+      // --- Hero Background SVG ---
+      const heroSvg = document.getElementById('hero-svg');
+      
+      // Floating shapes
+      for (let i = 0; i < 8; i++) {
+        const x = 100 + Math.random() * 600;
+        const y = 100 + Math.random() * 400;
+        const size = 20 + Math.random() * 40;
+        const opacity = 0.1 + Math.random() * 0.2;
+        
+        const shape = i % 2 === 0 
+          ? path().circle(x, y, size).build({ fill: `rgba(102, 126, 234, ${opacity})` })
+          : path().star(x, y, size, size * 0.5, 6).build({ fill: `rgba(78, 205, 196, ${opacity})` });
+        
+        heroSvg.appendChild(shape);
+        
+        // Parallax on shapes
+        scroll.parallax(shape, 0.1 + Math.random() * 0.3);
+      }
+      
+      // Central morphing logo
+      const centerShape = path().star(400, 300, 80, 40, 6).build({ 
+        fill: 'rgba(102, 126, 234, 0.3)', 
+        stroke: 'rgba(255,255,255,0.3)', 
+        strokeWidth: 2 
+      });
+      const { id: glowId, filter: glowFilter } = filters.glow(15, '#667eea');
+      filters.addFilterToSVG(heroSvg, glowFilter);
+      filters.applyFilter(centerShape, glowId);
+      heroSvg.appendChild(centerShape);
+      
+      // Auto-morph the center shape
+      const shapes = [
+        path().star(400, 300, 80, 40, 6).toString(),
+        path().circle(400, 300, 70).toString(),
+        path().polygon([[400, 220], [480, 270], [480, 330], [400, 380], [320, 330], [320, 270]]).toString(),
+      ];
+      morph.morphLoop(centerShape, shapes, { duration: 2000, pauseBetween: 1500 });
+
+      // --- Scroll indicator animation ---
+      const scrollIndicator = document.getElementById('scroll-indicator');
+      scroll.scrollAnimate(scrollIndicator, {
+        0: { opacity: '1' },
+        100: { opacity: '0' }
+      });
+
+      // --- Feature Icons ---
+      const featureIcons = [
+        { id: 'feature-icon-1', shape: () => path().star(30, 30, 25, 12, 5) },
+        { id: 'feature-icon-2', shape: () => path().circle(30, 30, 22) },
+        { id: 'feature-icon-3', shape: () => path().polygon([[30, 8], [52, 30], [30, 52], [8, 30]]) },
+        { id: 'feature-icon-4', shape: () => path().rect(8, 8, 44, 44, 8) },
+        { id: 'feature-icon-5', shape: () => path().star(30, 30, 25, 15, 3) },
+        { id: 'feature-icon-6', shape: () => path().polygon([[30, 5], [55, 20], [55, 45], [30, 55], [5, 45], [5, 20]]) },
+      ];
+      
+      featureIcons.forEach(({ id, shape }) => {
+        const container = document.getElementById(id);
+        const iconSvg = svg.createSVG(60, 60);
+        const iconPath = shape().build({ fill: 'none', stroke: '#667eea', strokeWidth: 2 });
+        const { id: gId, filter: gFilter } = filters.glow(4, '#667eea');
+        filters.addFilterToSVG(iconSvg, gFilter);
+        filters.applyFilter(iconPath, gId);
+        iconSvg.appendChild(iconPath);
+        container.appendChild(iconSvg);
+      });
+
+      // --- Scroll reveal for feature cards ---
+      document.querySelectorAll('[data-scroll-reveal]').forEach(el => {
+        scroll.observe(el, {
+          onEnter: () => el.classList.add('revealed'),
+        });
+      });
+
+      // --- Demo: Morph ---
+      const demoMorphSvg = document.getElementById('demo-morph');
+      const demoShapes = [
+        path().star(100, 100, 70, 35, 5).toString(),
+        path().circle(100, 100, 60).toString(),
+        path().polygon([[100, 30], [160, 65], [160, 135], [100, 170], [40, 135], [40, 65]]).toString(),
+      ];
+      const demoMorphPath = path().star(100, 100, 70, 35, 5).build({ fill: '#667eea', stroke: '#fff', strokeWidth: 2 });
+      demoMorphSvg.appendChild(demoMorphPath);
+      let morphIndex = 0;
+      
+      document.getElementById('morph-trigger').addEventListener('click', () => {
+        const from = demoShapes[morphIndex];
+        morphIndex = (morphIndex + 1) % demoShapes.length;
+        morph.morph(demoMorphPath, from, demoShapes[morphIndex], { duration: 500 });
+      });
+
+      // --- Demo: Fluid Drag ---
+      const demoDragSvg = document.getElementById('demo-drag');
+      const dragShape = path().star(100, 100, 60, 30, 6).build({ fill: '#4ecdc4', stroke: '#fff', strokeWidth: 2 });
+      demoDragSvg.appendChild(dragShape);
+      input.fluidDrag(dragShape, { strength: 0.5, decay: 0.88 });
+
+      // --- Demo: Text Path ---
+      const demoTextSvg = document.getElementById('demo-text-path');
+      textPath.circularText(demoTextSvg, '★ CONSTRUCTER ★ SCSS SUPERCHARGED ', 100, 100, 70, {
+        fontSize: '11px',
+        fill: '#f953c6',
+      });
+
+      // --- Demo: Timeline ---
+      const tlDots = document.querySelectorAll('[data-tl]');
+      document.getElementById('timeline-trigger').addEventListener('click', () => {
+        tlDots.forEach(d => { d.style.opacity = '0'; d.style.transform = 'scale(0.5)'; });
+        
+        const tl = timeline();
+        tl.stagger(tlDots, {
+          0: { opacity: 0, transform: 'scale(0.5)' },
+          100: { opacity: 1, transform: 'scale(1)' }
+        }, 300, 80, { easing: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)' });
+        tl.play();
+      });
+
+      // --- Code tabs ---
+      document.querySelectorAll('.code-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+          tab.classList.add('active');
+          document.querySelector(`[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+        });
+      });
+
+      // --- Copy install command ---
+      document.getElementById('copy-install').addEventListener('click', () => {
+        navigator.clipboard.writeText('npm install constructer');
+        document.getElementById('copy-install').textContent = 'Copied!';
+        setTimeout(() => document.getElementById('copy-install').textContent = 'Copy', 2000);
+      });
+
+      // --- CTA Background ---
+      const ctaBg = document.getElementById('cta-bg');
+      const ctaSvg = svg.createSVG(800, 400);
+      ctaSvg.style.width = '100%';
+      ctaSvg.style.height = '100%';
+      for (let i = 0; i < 12; i++) {
+        const x = Math.random() * 800;
+        const y = Math.random() * 400;
+        const r = 10 + Math.random() * 30;
+        const shape = path().circle(x, y, r).build({ fill: `rgba(255,255,255,${0.03 + Math.random() * 0.05})` });
+        ctaSvg.appendChild(shape);
+      }
+      ctaBg.appendChild(ctaSvg);
+
+      // --- Footer logo ---
+      const footerLogo = document.getElementById('footer-logo');
+      footerLogo.appendChild(path().star(16, 16, 12, 6, 6).build({ fill: '#667eea' }));
+
+      console.log('Constructer marketing site loaded!', Constructer);
+    });
+  </script>
+</body>
+</html>

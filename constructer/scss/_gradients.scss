@@ -1,0 +1,129 @@
+// ============================================
+// GRADIENT PRESETS
+// ============================================
+
+@use 'primitives' as p;
+
+// --- Sunset ---
+@mixin c-gradient-sunset($direction: to right) {
+  background: linear-gradient($direction, #ff512f, #f09819);
+}
+
+@mixin c-gradient-sunset-warm($direction: to right) {
+  background: linear-gradient($direction, #ee9ca7, #ffdde1);
+}
+
+// --- Ocean ---
+@mixin c-gradient-ocean($direction: to right) {
+  background: linear-gradient($direction, #2193b0, #6dd5ed);
+}
+
+@mixin c-gradient-ocean-deep($direction: to right) {
+  background: linear-gradient($direction, #0f2027, #203a43, #2c5364);
+}
+
+// --- Aurora ---
+@mixin c-gradient-aurora($direction: 135deg) {
+  background: linear-gradient($direction, #00c9ff, #92fe9d);
+}
+
+@mixin c-gradient-aurora-night($direction: 135deg) {
+  background: linear-gradient($direction, #0f0c29, #302b63, #24243e);
+}
+
+// --- Neon ---
+@mixin c-gradient-neon-pink($direction: to right) {
+  background: linear-gradient($direction, #f953c6, #b91d73);
+}
+
+@mixin c-gradient-neon-blue($direction: to right) {
+  background: linear-gradient($direction, #4facfe, #00f2fe);
+}
+
+@mixin c-gradient-neon-purple($direction: to right) {
+  background: linear-gradient($direction, #667eea, #764ba2);
+}
+
+@mixin c-gradient-neon-cyber($direction: 135deg) {
+  background: linear-gradient($direction, #fc00ff, #00dbde);
+}
+
+// --- Nature ---
+@mixin c-gradient-forest($direction: to right) {
+  background: linear-gradient($direction, #134e5e, #71b280);
+}
+
+@mixin c-gradient-autumn($direction: to right) {
+  background: linear-gradient($direction, #d38312, #a83279);
+}
+
+@mixin c-gradient-spring($direction: to right) {
+  background: linear-gradient($direction, #a8e063, #56ab2f);
+}
+
+// --- Dark/Moody ---
+@mixin c-gradient-midnight($direction: to right) {
+  background: linear-gradient($direction, #232526, #414345);
+}
+
+@mixin c-gradient-charcoal($direction: to right) {
+  background: linear-gradient($direction, #3a3a3a, #1a1a1a);
+}
+
+@mixin c-gradient-void($direction: 135deg) {
+  background: linear-gradient($direction, #0a0a0a, #1a1a2e, #16213e);
+}
+
+// --- Metallic ---
+@mixin c-gradient-silver($direction: 135deg) {
+  background: linear-gradient($direction, #bdc3c7, #2c3e50);
+}
+
+@mixin c-gradient-gold($direction: 135deg) {
+  background: linear-gradient($direction, #f7971e, #ffd200);
+}
+
+@mixin c-gradient-rose-gold($direction: 135deg) {
+  background: linear-gradient($direction, #b76e79, #f0e6e6);
+}
+
+// --- Animated gradients ---
+@mixin c-gradient-animated($color1, $color2, $color3: null, $duration: 5s) {
+  $c3: if($color3, $color3, mix($color1, $color2, 50%));
+  background: linear-gradient(-45deg, $color1, $color2, $c3, $color1);
+  background-size: 400% 400%;
+  animation: c-gradient-shift $duration ease infinite;
+  
+  @at-root {
+    @keyframes c-gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  }
+}
+
+// --- Mesh presets ---
+@mixin c-gradient-mesh-sunset() {
+  background: 
+    radial-gradient(at 0% 0%, rgba(255, 81, 47, 0.8) 0%, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(240, 152, 25, 0.8) 0%, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(255, 107, 107, 0.6) 0%, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(238, 156, 167, 0.6) 0%, transparent 50%);
+}
+
+@mixin c-gradient-mesh-ocean() {
+  background: 
+    radial-gradient(at 0% 0%, rgba(33, 147, 176, 0.8) 0%, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(109, 213, 237, 0.8) 0%, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(79, 172, 254, 0.6) 0%, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(0, 242, 254, 0.6) 0%, transparent 50%);
+}
+
+@mixin c-gradient-mesh-neon() {
+  background: 
+    radial-gradient(at 0% 0%, rgba(249, 83, 198, 0.8) 0%, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(102, 126, 234, 0.8) 0%, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(0, 219, 222, 0.6) 0%, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(252, 0, 255, 0.6) 0%, transparent 50%);
+}

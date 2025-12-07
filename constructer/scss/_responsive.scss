@@ -1,0 +1,132 @@
+// ============================================
+// RESPONSIVE UTILITIES
+// ============================================
+
+// --- Breakpoints ---
+$c-breakpoints: (
+  'xs': 480px,
+  'sm': 640px,
+  'md': 768px,
+  'lg': 1024px,
+  'xl': 1280px,
+  '2xl': 1536px,
+) !default;
+
+// Media query mixins
+@mixin c-above($breakpoint) {
+  @if map-has-key($c-breakpoints, $breakpoint) {
+    @media (min-width: map-get($c-breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @media (min-width: $breakpoint) {
+      @content;
+    }
+  }
+}
+
+@mixin c-below($breakpoint) {
+  @if map-has-key($c-breakpoints, $breakpoint) {
+    @media (max-width: map-get($c-breakpoints, $breakpoint) - 1px) {
+      @content;
+    }
+  } @else {
+    @media (max-width: $breakpoint - 1px) {
+      @content;
+    }
+  }
+}
+
+@mixin c-between($min, $max) {
+  $min-val: if(map-has-key($c-breakpoints, $min), map-get($c-breakpoints, $min), $min);
+  $max-val: if(map-has-key($c-breakpoints, $max), map-get($c-breakpoints, $max), $max);
+  
+  @media (min-width: $min-val) and (max-width: $max-val - 1px) {
+    @content;
+  }
+}
+
+// --- Fluid sizing ---
+@function c-fluid($min, $max, $min-vw: 320px, $max-vw: 1200px) {
+  $slope: calc(($max - $min) / ($max-vw - $min-vw));
+  $intercept: $min - $slope * $min-vw;
+  @return clamp(#{$min}, calc(#{$intercept} + #{$slope * 100vw}), #{$max});
+}
+
+// --- Fluid scene ---
+@mixin c-scene-fluid($min-width, $max-width, $aspect-ratio: 4/3) {
+  width: c-fluid($min-width, $max-width);
+  aspect-ratio: $aspect-ratio;
+  height: auto;
+}
+
+// --- Container queries (modern browsers) ---
+@mixin c-container($name: null) {
+  container-type: inline-size;
+  @if $name {
+    container-name: $name;
+  }
+}
+
+@mixin c-container-above($size, $name: null) {
+  @if $name {
+    @container #{$name} (min-width: #{$size}) {
+      @content;
+    }
+  } @else {
+    @container (min-width: #{$size}) {
+      @content;
+    }
+  }
+}
+
+@mixin c-container-below($size, $name: null) {
+  @if $name {
+    @container #{$name} (max-width: #{$size}) {
+      @content;
+    }
+  } @else {
+    @container (max-width: #{$size}) {
+      @content;
+    }
+  }
+}
+
+// --- Responsive visibility ---
+@mixin c-hide-above($breakpoint) {
+  @include c-above($breakpoint) {
+    display: none !important;
+  }
+}
+
+@mixin c-hide-below($breakpoint) {
+  @include c-below($breakpoint) {
+    display: none !important;
+  }
+}
+
+@mixin c-show-above($breakpoint, $display: block) {
+  display: none;
+  @include c-above($breakpoint) {
+    display: $display !important;
+  }
+}
+
+@mixin c-show-below($breakpoint, $display: block) {
+  display: none;
+  @include c-below($breakpoint) {
+    display: $display !important;
+  }
+}
+
+// --- Responsive layer positioning ---
+@mixin c-layer-responsive($z: 0) {
+  position: absolute;
+  inset: 0;
+  z-index: $z;
+  
+  @include c-below('sm') {
+    position: relative;
+    inset: auto;
+  }
+}

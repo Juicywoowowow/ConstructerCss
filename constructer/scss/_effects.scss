@@ -1,0 +1,76 @@
+// ============================================
+// EFFECTS - Gradients, Shadows, Glows
+// ============================================
+
+@use 'primitives' as p;
+
+// --- Gradients ---
+@mixin c-gradient-linear($direction, $colors...) {
+  background: linear-gradient($direction, $colors);
+}
+
+@mixin c-gradient-radial($shape: circle, $colors...) {
+  background: radial-gradient($shape, $colors);
+}
+
+@mixin c-gradient-conic($from: 0deg, $colors...) {
+  background: conic-gradient(from $from, $colors);
+}
+
+// Mesh-like gradient (layered radials)
+@mixin c-gradient-mesh($color1, $color2, $color3: null) {
+  $c3: if($color3, $color3, mix($color1, $color2, 50%));
+  background: 
+    radial-gradient(at 0% 0%, p.c-alpha($color1, 0.8) 0%, transparent 50%),
+    radial-gradient(at 100% 0%, p.c-alpha($color2, 0.8) 0%, transparent 50%),
+    radial-gradient(at 100% 100%, p.c-alpha($c3, 0.8) 0%, transparent 50%),
+    radial-gradient(at 0% 100%, p.c-alpha($color1, 0.6) 0%, transparent 50%);
+}
+
+// --- Shadows ---
+@mixin c-shadow($x: 0, $y: 4px, $blur: 6px, $spread: 0, $color: p.c-alpha(p.$c-black, 0.1)) {
+  box-shadow: $x $y $blur $spread $color;
+}
+
+@mixin c-shadow-layered($color: p.$c-black) {
+  box-shadow:
+    0 1px 2px p.c-alpha($color, 0.05),
+    0 2px 4px p.c-alpha($color, 0.05),
+    0 4px 8px p.c-alpha($color, 0.05),
+    0 8px 16px p.c-alpha($color, 0.05);
+}
+
+@mixin c-shadow-elevated($level: 1, $color: p.$c-black) {
+  $y: $level * 4px;
+  $blur: $level * 8px;
+  box-shadow: 0 $y $blur p.c-alpha($color, 0.15 + ($level * 0.02));
+}
+
+// --- Glows ---
+@mixin c-glow($color, $size: 20px, $opacity: 0.6) {
+  box-shadow: 0 0 $size p.c-alpha($color, $opacity);
+}
+
+@mixin c-glow-pulse($color, $size: 20px) {
+  animation: c-glow-pulse 2s ease-in-out infinite;
+  
+  @at-root {
+    @keyframes c-glow-pulse {
+      0%, 100% { box-shadow: 0 0 $size p.c-alpha($color, 0.4); }
+      50% { box-shadow: 0 0 ($size * 1.5) p.c-alpha($color, 0.8); }
+    }
+  }
+}
+
+// --- Blur ---
+@mixin c-blur($amount: 10px) {
+  backdrop-filter: blur($amount);
+  -webkit-backdrop-filter: blur($amount);
+}
+
+// --- Glass effect ---
+@mixin c-glass($blur: 10px, $opacity: 0.1, $color: p.$c-white) {
+  background: p.c-alpha($color, $opacity);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+}

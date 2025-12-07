@@ -1,0 +1,82 @@
+// ============================================
+// SCENE - Layered Compositions
+// ============================================
+
+// Scene container setup
+@mixin c-scene($name: null, $width: 100%, $height: 100%) {
+  position: relative;
+  width: $width;
+  height: $height;
+  overflow: hidden;
+  
+  @if $name {
+    &[data-c-scene="#{$name}"],
+    &:not([data-c-scene]) {
+      // Allow explicit or auto-assigned scene names
+    }
+  }
+}
+
+// Layer within a scene
+@mixin c-layer($z: 0) {
+  position: absolute;
+  inset: 0;
+  z-index: $z;
+}
+
+// Layer with custom positioning
+@mixin c-layer-positioned($z: 0, $top: 0, $right: 0, $bottom: 0, $left: 0) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  z-index: $z;
+}
+
+// SVG container layer (for runtime-injected SVGs)
+@mixin c-svg-layer($z: 0) {
+  @include c-layer($z);
+  
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Animation sequence helper
+@mixin c-animate($name, $duration: 1s, $easing: ease, $delay: 0s, $fill: forwards) {
+  animation: $name $duration $easing $delay $fill;
+}
+
+// Stagger children animations
+@mixin c-stagger($delay-step: 0.1s, $max-children: 10) {
+  @for $i from 1 through $max-children {
+    &:nth-child(#{$i}) {
+      animation-delay: calc(#{$delay-step} * #{$i});
+    }
+  }
+}
+
+// Data attribute helpers for runtime
+@mixin c-runtime-scene($name) {
+  @include c-scene($name);
+  
+  &::before {
+    content: '';
+    display: none;
+  }
+  
+  // Attribute set via mixin for runtime detection
+  &[data-c-scene="#{$name}"] {
+    // Runtime will pick this up
+  }
+}
+
+@mixin c-runtime-layer($z: 0) {
+  @include c-layer($z);
+  
+  &[data-c-layer][data-c-z="#{$z}"] {
+    // Runtime will pick this up
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "constructer",
+  "version": "0.1.0",
+  "description": "TypeScript library that supercharges SCSS with layered compositions and visual effects",
+  "main": "dist/constructer.js",
+  "types": "dist/constructer.d.ts",
+  "sass": "scss/_index.scss",
+  "files": [
+    "dist",
+    "scss"
+  ],
+  "scripts": {
+    "build": "webpack --mode=production",
+    "dev": "webpack --mode=development --watch"
+  },
+  "devDependencies": {
+    "sass": "^1.94.2",
+    "terser-webpack-plugin": "^5.3.9",
+    "ts-loader": "^9.5.0",
+    "typescript": "^5.3.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "keywords": [
+    "scss",
+    "css",
+    "svg",
+    "animation",
+    "design-system"
+  ],
+  "license": "MIT"
+}
