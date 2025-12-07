@@ -1,0 +1,39 @@
+{
+  "packages": [
+    {
+      "name": "neofetch",
+      "description": "System info display",
+      "repo": "https://github.com/dylanaraps/neofetch.git",
+      "build": "make",
+      "binary": "neofetch"
+    },
+    {
+      "name": "htop",
+      "description": "Process viewer",
+      "repo": "https://github.com/htop-dev/htop.git",
+      "build": "./autogen.sh && ./configure && make",
+      "binary": "htop"
+    },
+    {
+      "name": "micro",
+      "description": "Terminal text editor",
+      "repo": "https://github.com/zyedidia/micro.git",
+      "build": "make build",
+      "binary": "micro"
+    },
+    {
+      "name": "fzf",
+      "description": "Fuzzy finder",
+      "repo": "https://github.com/junegunn/fzf.git",
+      "build": "./install --bin",
+      "binary": "fzf"
+    },
+    {
+      "name": "jq",
+      "description": "JSON processor",
+      "repo": "https://github.com/stedolan/jq.git",
+      "build": "autoreconf -i && ./configure && make",
+      "binary": "jq"
+    }
+  ]
+}
