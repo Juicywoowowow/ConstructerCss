@@ -96,131 +96,90 @@ PKG_DEPS["bat"]="rust"
 auto_build() {
     echo -e "${CYAN}Auto-detecting build system...${RESET}"
     
-    # Check for Makefile first
-    if [ -f "Makefile" ] || [ -f "makefile" ] || [ -f "GNUmakefile" ]; then
-        echo -e "${GREEN}Found Makefile${RESET}"
+    # Use detection script to analyze project
+    local detect_script="$PKT_HOME/scripts/detect_build.sh"
+    
+    if [ ! -f "$detect_script" ]; then
+        echo -e "${RED}Detection script not found${RESET}"
+        return 1
+    fi
+    
+    # Run detection and parse output
+    bash "$detect_script" . > /tmp/pkt_detect.json 2>/dev/null
+    
+    if [ ! -f /tmp/pkt_detect.json ]; then
+        echo -e "${RED}Failed to detect build system${RESET}"
+        return 1
+    fi
+    
+    # Extract build info (simple JSON parsing)
+    local build_type=$(grep -o '"build_type": "[^"]*' /tmp/pkt_detect.json | cut -d'"' -f4)
+    local build_cmd=$(grep -o '"build_cmd": "[^"]*' /tmp/pkt_detect.json | cut -d'"' -f4)
+    local deps_cmd=$(grep -o '"deps_cmd": "[^"]*' /tmp/pkt_detect.json | cut -d'"' -f4)
+    local deps_pkg=$(grep -o '"deps_pkg": "[^"]*' /tmp/pkt_detect.json | cut -d'"' -f4)
+    local output_path=$(grep -o '"output_path": "[^"]*' /tmp/pkt_detect.json | cut -d'"' -f4)
+    
+    if [ -z "$build_type" ]; then
+        echo -e "${RED}No build system detected${RESET}"
+        return 1
+    fi
+    
+    echo -e "${GREEN}Detected: $build_type${RESET}"
+    
+    # Install missing dependencies
+    if [ -n "$deps_cmd" ]; then
+        echo -e "${CYAN}Checking dependencies...${RESET}"
         
-        # Check if there's an install target
-        if grep -q "^install:" Makefile 2>/dev/null || grep -q "^install:" makefile 2>/dev/null; then
-            make && make PREFIX="$PKT_HOME" install
-        else
-            make
-            # Try to find and copy the binary
-            find_and_copy_binary
-        fi
-        return $?
-    fi
-    
-    # Check for configure script
-    if [ -f "configure" ]; then
-        echo -e "${GREEN}Found configure script${RESET}"
-        ./configure --prefix="$PKT_HOME" && make && make install
-        return $?
-    fi
-    
-    # Check for autogen.sh
-    if [ -f "autogen.sh" ]; then
-        echo -e "${GREEN}Found autogen.sh${RESET}"
-        ./autogen.sh && ./configure --prefix="$PKT_HOME" && make && make install
-        return $?
-    fi
-    
-    # Check for CMakeLists.txt
-    if [ -f "CMakeLists.txt" ]; then
-        echo -e "${GREEN}Found CMakeLists.txt${RESET}"
-        mkdir -p build && cd build
-        cmake -DCMAKE_INSTALL_PREFIX="$PKT_HOME" .. && make && make install
-        return $?
-    fi
-    
-    # Check for setup.py (Python)
-    if [ -f "setup.py" ]; then
-        echo -e "${GREEN}Found setup.py${RESET}"
-        pip install --user .
-        return $?
-    fi
-    
-    # Check for Cargo.toml (Rust)
-    if [ -f "Cargo.toml" ]; then
-        echo -e "${GREEN}Found Cargo.toml${RESET}"
-        cargo build --release
-        find_and_copy_binary "target/release"
-        return $?
-    fi
-    
-    # Check for go.mod (Go)
-    if [ -f "go.mod" ]; then
-        echo -e "${GREEN}Found go.mod${RESET}"
-        go build -o "$PACKAGE"
-        cp "$PACKAGE" "$PKT_BIN/"
-        return $?
-    fi
-    
-    # Check for Gradle (gradlew or build.gradle)
-    if [ -f "gradlew" ] || [ -f "build.gradle" ] || [ -f "build.gradle.kts" ]; then
-        echo -e "${GREEN}Found Gradle project${RESET}"
-        
-        # Install gradle/java if needed
-        if ! command -v java &> /dev/null; then
-            echo -e "${YELLOW}Installing Java...${RESET}"
-            pkg install -y openjdk-17 2>/dev/null || apt install -y openjdk-17 2>/dev/null
-        fi
-        
-        if [ -f "gradlew" ]; then
-            # Use wrapper
-            chmod +x gradlew
-            ./gradlew build --no-daemon
-        else
-            # Install gradle if not present
-            if ! command -v gradle &> /dev/null; then
-                echo -e "${YELLOW}Installing Gradle...${RESET}"
-                pkg install -y gradle 2>/dev/null || apt install -y gradle 2>/dev/null
+        MISSING_DEPS=()
+        for cmd in $deps_cmd; do
+            if ! command -v "$cmd" &> /dev/null; then
+                MISSING_DEPS+=("$cmd")
             fi
-            gradle build --no-daemon
-        fi
+        done
         
-        # Find and copy built jar or binary
-        find_gradle_output
-        return $?
+        if [ ${#MISSING_DEPS[@]} -gt 0 ]; then
+            echo -e "${YELLOW}Missing: ${MISSING_DEPS[*]}${RESET}"
+            echo -e "${CYAN}Installing dependencies...${RESET}"
+            
+            pkg update -y 2>/dev/null || apt update -y 2>/dev/null
+            
+            for pkg in $deps_pkg; do
+                echo -e "${YELLOW}  -> $pkg${RESET}"
+                pkg install -y "$pkg" 2>/dev/null || apt install -y "$pkg" 2>/dev/null
+            done
+            
+            echo -e "${GREEN}Dependencies installed${RESET}"
+        else
+            echo -e "${GREEN}All dependencies satisfied${RESET}"
+        fi
     fi
     
-    echo -e "${RED}No recognized build system found${RESET}"
-    return 1
+    # Execute build command
+    echo -e "${CYAN}Building...${RESET}"
+    
+    # Replace variables in build command
+    build_cmd="${build_cmd//\$PKT_HOME/$PKT_HOME}"
+    build_cmd="${build_cmd//\$PACKAGE/$PACKAGE}"
+    
+    eval "$build_cmd"
+    local build_result=$?
+    
+    if [ $build_result -ne 0 ]; then
+        echo -e "${RED}Build failed${RESET}"
+        return 1
+    fi
+    
+    # Find and copy output
+    if [ -n "$output_path" ] && [ -d "$output_path" ]; then
+        find_and_copy_binary "$output_path"
+    else
+        find_and_copy_binary
+    fi
+    
+    return $?
 }
 
-# Find Gradle build output and copy
-find_gradle_output() {
-    # Look for jar files in build/libs
-    if [ -d "build/libs" ]; then
-        local jar=$(find build/libs -name "*.jar" ! -name "*-sources.jar" ! -name "*-javadoc.jar" | head -1)
-        if [ -n "$jar" ]; then
-            cp "$jar" "$PKT_BIN/"
-            
-            # Create wrapper script to run the jar
-            local jar_name=$(basename "$jar")
-            cat > "$PKT_BIN/$PACKAGE" << EOF
-#!/bin/bash
-java -jar "\$HOME/.pkt/bin/$jar_name" "\$@"
-EOF
-            chmod +x "$PKT_BIN/$PACKAGE"
-            echo -e "${GREEN}Installed $jar_name with wrapper script${RESET}"
-            return 0
-        fi
-    fi
-    
-    # Look for native binary in build/native or build/bin
-    for dir in "build/native" "build/bin" "build/exe"; do
-        if [ -d "$dir" ]; then
-            find_and_copy_binary "$dir"
-            if [ $? -eq 0 ]; then
-                return 0
-            fi
-        fi
-    done
-    
-    echo -e "${YELLOW}No output binary/jar found, check build/libs manually${RESET}"
-    return 1
-}
+
 
 # Find binary and copy to bin
 find_and_copy_binary() {
@@ -229,13 +188,31 @@ find_and_copy_binary() {
     # Look for binary with package name
     if [ -f "$search_dir/$PACKAGE" ]; then
         cp "$search_dir/$PACKAGE" "$PKT_BIN/"
+        chmod +x "$PKT_BIN/$PACKAGE"
+        return 0
+    fi
+    
+    # Look for jar files (Java)
+    local jar=$(find "$search_dir" -name "*.jar" ! -name "*-sources.jar" ! -name "*-javadoc.jar" 2>/dev/null | head -1)
+    if [ -n "$jar" ]; then
+        cp "$jar" "$PKT_BIN/"
+        local jar_name=$(basename "$jar")
+        
+        # Create wrapper script
+        cat > "$PKT_BIN/$PACKAGE" << EOF
+#!/bin/bash
+java -jar "\$HOME/.pkt/bin/$jar_name" "\$@"
+EOF
+        chmod +x "$PKT_BIN/$PACKAGE"
+        echo -e "${GREEN}Created wrapper for $jar_name${RESET}"
         return 0
     fi
     
     # Look for any executable
-    local binary=$(find "$search_dir" -maxdepth 2 -type f -executable ! -name "*.sh" ! -name "*.py" | head -1)
+    local binary=$(find "$search_dir" -maxdepth 2 -type f -executable ! -name "*.sh" ! -name "*.py" ! -name "*.jar" 2>/dev/null | head -1)
     if [ -n "$binary" ]; then
         cp "$binary" "$PKT_BIN/"
+        chmod +x "$PKT_BIN/$(basename "$binary")"
         return 0
     fi
     

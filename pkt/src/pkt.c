@@ -203,8 +203,8 @@ void install_package(int idx) {
     
     printf(CYAN "\n Installing %s...\n" RESET, packages[idx].name);
     
-    char cmd[MAX_PATH];
-    snprintf(cmd, sizeof(cmd), "bash scripts/install.sh %s", packages[idx].name);
+    char cmd[MAX_PATH * 2];
+    snprintf(cmd, sizeof(cmd), "bash %s/scripts/install.sh %s", pkt_home, packages[idx].name);
     int result = system(cmd);
     
     if (result == 0) {
@@ -230,8 +230,8 @@ void uninstall_package(int idx) {
     char c = getch();
     
     if (c == 'y' || c == 'Y') {
-        char cmd[MAX_PATH];
-        snprintf(cmd, sizeof(cmd), "bash scripts/uninstall.sh %s", packages[idx].name);
+        char cmd[MAX_PATH * 2];
+        snprintf(cmd, sizeof(cmd), "bash %s/scripts/uninstall.sh %s", pkt_home, packages[idx].name);
         int result = system(cmd);
         
         if (result == 0) {
@@ -258,8 +258,8 @@ void check_update(int idx) {
     
     printf(CYAN "\n Checking for updates...\n" RESET);
     
-    char cmd[MAX_PATH];
-    snprintf(cmd, sizeof(cmd), "bash scripts/check_update.sh %s", packages[idx].name);
+    char cmd[MAX_PATH * 2];
+    snprintf(cmd, sizeof(cmd), "bash %s/scripts/check_update.sh %s", pkt_home, packages[idx].name);
     int result = system(cmd);
     
     if (result == 1) {
@@ -269,7 +269,7 @@ void check_update(int idx) {
         char c = getch();
         
         if (c == 'y' || c == 'Y') {
-            snprintf(cmd, sizeof(cmd), "bash scripts/install.sh %s update", packages[idx].name);
+            snprintf(cmd, sizeof(cmd), "bash %s/scripts/install.sh %s update", pkt_home, packages[idx].name);
             system(cmd);
             packages[idx].update_available = 0;
             printf(GREEN "\n Updated %s!\n" RESET, packages[idx].name);
