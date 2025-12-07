@@ -13,6 +13,11 @@ PKT_SRC="$PKT_HOME/src"
 
 echo -e "${CYAN}Setting up Pkt...${RESET}"
 
+# Install base dependencies needed for most builds
+echo -e "${CYAN}Installing base build tools...${RESET}"
+pkg update -y 2>/dev/null || apt update -y 2>/dev/null
+pkg install -y git make clang 2>/dev/null || apt install -y git make clang 2>/dev/null
+
 # Create directories
 mkdir -p "$PKT_BIN" "$PKT_SRC"
 

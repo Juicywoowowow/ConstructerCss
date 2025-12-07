@@ -1,39 +1,74 @@
 {
   "packages": [
     {
-      "name": "neofetch",
-      "description": "System info display",
-      "repo": "https://github.com/dylanaraps/neofetch.git",
-      "build": "make",
-      "binary": "neofetch"
+      "name": "nnn",
+      "description": "Terminal file manager",
+      "repo": "https://github.com/jarun/nnn.git",
+      "build": "auto",
+      "binary": "nnn"
     },
     {
-      "name": "htop",
-      "description": "Process viewer",
-      "repo": "https://github.com/htop-dev/htop.git",
-      "build": "./autogen.sh && ./configure && make",
-      "binary": "htop"
+      "name": "lazygit",
+      "description": "Git TUI client",
+      "repo": "https://github.com/jesseduffield/lazygit.git",
+      "build": "go build",
+      "binary": "lazygit"
     },
     {
-      "name": "micro",
-      "description": "Terminal text editor",
-      "repo": "https://github.com/zyedidia/micro.git",
-      "build": "make build",
-      "binary": "micro"
+      "name": "gotop",
+      "description": "Terminal system monitor",
+      "repo": "https://github.com/xxxserxxx/gotop.git",
+      "build": "go build ./cmd/gotop",
+      "binary": "gotop"
     },
     {
-      "name": "fzf",
-      "description": "Fuzzy finder",
-      "repo": "https://github.com/junegunn/fzf.git",
-      "build": "./install --bin",
-      "binary": "fzf"
+      "name": "lf",
+      "description": "Terminal file manager",
+      "repo": "https://github.com/gokcehan/lf.git",
+      "build": "go build",
+      "binary": "lf"
     },
     {
-      "name": "jq",
-      "description": "JSON processor",
-      "repo": "https://github.com/stedolan/jq.git",
-      "build": "autoreconf -i && ./configure && make",
-      "binary": "jq"
+      "name": "croc",
+      "description": "File transfer tool",
+      "repo": "https://github.com/schollz/croc.git",
+      "build": "go build",
+      "binary": "croc"
+    },
+    {
+      "name": "glow",
+      "description": "Markdown renderer",
+      "repo": "https://github.com/charmbracelet/glow.git",
+      "build": "go build",
+      "binary": "glow"
+    },
+    {
+      "name": "bat",
+      "description": "Cat with syntax highlighting",
+      "repo": "https://github.com/sharkdp/bat.git",
+      "build": "cargo build --release",
+      "binary": "bat"
+    },
+    {
+      "name": "termux-api",
+      "description": "Termux API access",
+      "repo": "https://github.com/termux/termux-api.git",
+      "build": "auto",
+      "binary": "termux-api"
+    },
+    {
+      "name": "termux-styling",
+      "description": "Terminal styling",
+      "repo": "https://github.com/termux/termux-styling.git",
+      "build": "auto",
+      "binary": "termux-styling"
+    },
+    {
+      "name": "termux-boot",
+      "description": "Run scripts on boot",
+      "repo": "https://github.com/termux/termux-boot.git",
+      "build": "auto",
+      "binary": "termux-boot"
     }
   ]
 }

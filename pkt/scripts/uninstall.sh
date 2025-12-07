@@ -16,11 +16,16 @@ PACKAGE="$1"
 
 # Binary names for each package
 declare -A BINARIES
-BINARIES["neofetch"]="neofetch"
-BINARIES["htop"]="htop"
-BINARIES["micro"]="micro"
-BINARIES["fzf"]="fzf"
-BINARIES["jq"]="jq"
+BINARIES["nnn"]="nnn"
+BINARIES["lazygit"]="lazygit"
+BINARIES["gotop"]="gotop"
+BINARIES["lf"]="lf"
+BINARIES["croc"]="croc"
+BINARIES["glow"]="glow"
+BINARIES["bat"]="bat"
+BINARIES["termux-api"]="termux-api"
+BINARIES["termux-styling"]="termux-styling"
+BINARIES["termux-boot"]="termux-boot"
 
 if [ -z "$PACKAGE" ]; then
     echo -e "${RED}Error: No package specified${RESET}"

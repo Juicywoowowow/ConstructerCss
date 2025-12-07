@@ -64,36 +64,58 @@ void init_paths() {
 
 // Simple JSON parsing for our package list
 void load_packages() {
-    char pkg_json_path[MAX_PATH];
-    snprintf(pkg_json_path, MAX_PATH, "%s/../packages.json", pkt_home);
-    
-    // For now, hardcode packages - we'll enhance JSON parsing later
-    strcpy(packages[0].name, "neofetch");
-    strcpy(packages[0].description, "System info display");
+    // Termux-specific packages
+    strcpy(packages[0].name, "nnn");
+    strcpy(packages[0].description, "Terminal file manager");
     packages[0].installed = 0;
     packages[0].update_available = 0;
     
-    strcpy(packages[1].name, "htop");
-    strcpy(packages[1].description, "Process viewer");
+    strcpy(packages[1].name, "lazygit");
+    strcpy(packages[1].description, "Git TUI client");
     packages[1].installed = 0;
     packages[1].update_available = 0;
     
-    strcpy(packages[2].name, "micro");
-    strcpy(packages[2].description, "Terminal text editor");
+    strcpy(packages[2].name, "gotop");
+    strcpy(packages[2].description, "Terminal system monitor");
     packages[2].installed = 0;
     packages[2].update_available = 0;
     
-    strcpy(packages[3].name, "fzf");
-    strcpy(packages[3].description, "Fuzzy finder");
+    strcpy(packages[3].name, "lf");
+    strcpy(packages[3].description, "Terminal file manager");
     packages[3].installed = 0;
     packages[3].update_available = 0;
     
-    strcpy(packages[4].name, "jq");
-    strcpy(packages[4].description, "JSON processor");
+    strcpy(packages[4].name, "croc");
+    strcpy(packages[4].description, "File transfer tool");
     packages[4].installed = 0;
     packages[4].update_available = 0;
     
-    package_count = 5;
+    strcpy(packages[5].name, "glow");
+    strcpy(packages[5].description, "Markdown renderer");
+    packages[5].installed = 0;
+    packages[5].update_available = 0;
+    
+    strcpy(packages[6].name, "bat");
+    strcpy(packages[6].description, "Cat with syntax highlighting");
+    packages[6].installed = 0;
+    packages[6].update_available = 0;
+    
+    strcpy(packages[7].name, "termux-api");
+    strcpy(packages[7].description, "Termux API access");
+    packages[7].installed = 0;
+    packages[7].update_available = 0;
+    
+    strcpy(packages[8].name, "termux-styling");
+    strcpy(packages[8].description, "Terminal styling");
+    packages[8].installed = 0;
+    packages[8].update_available = 0;
+    
+    strcpy(packages[9].name, "termux-boot");
+    strcpy(packages[9].description, "Run scripts on boot");
+    packages[9].installed = 0;
+    packages[9].update_available = 0;
+    
+    package_count = 10;
 }
 
 // Check if package is installed
