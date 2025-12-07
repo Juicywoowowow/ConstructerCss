@@ -55,12 +55,16 @@ impl ContainerManager {
             return Err(anyhow!("Container '{}' is already running", name));
         }
 
-        let script = &config.script;
-        if !std::path::Path::new(script).exists() {
-            return Err(anyhow!(
-                "Script '{}' not found. Container may be corrupted.",
-                script
-            ));
+        let script = config.script.clone();
+        if !std::path::Path::new(&script).exists() {
+            println!("Script not found, generating default...");
+            let default_script = match config.python_version.as_str() {
+                "Python2" => "#!/usr/bin/env python2\nprint 'Hello from Dock container'",
+                "Python3" => "#!/usr/bin/env python3\nprint('Hello from Dock container')",
+                _ => "#!/usr/bin/env python\nprint('Hello from Dock container')",
+            };
+            fs::write(&script, default_script)?;
+            println!("✓ Generated default script at {}", script);
         }
 
         config.status = "running".to_string();
